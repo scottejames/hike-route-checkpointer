@@ -1090,9 +1090,20 @@ function renderCheckpoints() {
         : checkpoint.arrivalTime
           ? `<div class="item-meta">Arrive ${escapeHtml(checkpoint.arrivalTime)} - stop ${checkpoint.stopMinutes} min - leave ${escapeHtml(checkpoint.departureTime)}</div>`
           : `<div class="item-meta">Stop ${checkpoint.stopMinutes} min</div>`;
-    const viaLine = checkpoint.viaPoints?.length > 0
-      ? `<div class="item-meta via-summary">via ${checkpoint.viaPoints.map((viaPoint) => escapeHtml(viaPoint.gridRef)).join(", ")}</div>`
-      : "";
+    const viaRows = checkpoint.viaPoints?.map((viaPoint) => `
+      <article class="list-item checkpoint-row via-row" data-checkpoint-id="${viaPoint.id}">
+        <div class="item-main">
+          <div class="item-title">${escapeHtml(viaPoint.displayName || "Via")}</div>
+          <div class="item-meta">${escapeHtml(viaPoint.gridRef)}</div>
+          ${viaPoint.sourceFilename ? `<div class="item-meta">${escapeHtml(viaPoint.sourceFilename)}</div>` : ""}
+        </div>
+        <div class="item-actions">
+          <button type="button" data-action="zoom-checkpoint">Zoom</button>
+          <button type="button" data-action="make-checkpoint">Make checkpoint</button>
+          <button type="button" data-action="remove-checkpoint">Remove</button>
+        </div>
+      </article>
+    `).join("") || "";
     const typeButton = checkpoint.virtual
       ? ""
       : `<button type="button" data-action="make-via">Make via</button>`;
@@ -1102,11 +1113,11 @@ function renderCheckpoints() {
 
     return `
       ${legRow}
+      ${viaRows}
       <article class="list-item checkpoint-row" ${itemIdAttribute}>
         <div class="item-main">
           <div class="item-title">${escapeHtml(checkpoint.displayName || checkpoint.filename)}</div>
           <div class="item-meta">${escapeHtml(checkpoint.gridRef)}</div>
-          ${viaLine}
           ${startTimeControl}
           ${scheduleLine}
         </div>
@@ -1302,6 +1313,10 @@ elements.checkpointList.addEventListener("click", (event) => {
 
   if (button.dataset.action === "make-via" && !isEndpoint) {
     setWaypointType(checkpoint, "via");
+  }
+
+  if (button.dataset.action === "make-checkpoint" && !isEndpoint) {
+    setWaypointType(checkpoint, "checkpoint");
   }
 
   if (button.dataset.action === "remove-checkpoint" && !isEndpoint) {

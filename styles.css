@@ -250,6 +250,16 @@ h2 {
   color: var(--accent-strong);
 }
 
+.via-row {
+  background: #f6faf7;
+  border-color: #c8d8ce;
+  margin-left: 18px;
+}
+
+.via-row .item-title {
+  color: var(--accent-strong);
+}
+
 .item-actions,
 .button-row {
   display: flex;

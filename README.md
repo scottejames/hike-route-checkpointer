@@ -17,7 +17,7 @@ Then open `http://127.0.0.1:8000/`.
 - Imports one or more GPX route files and overlays them on an OpenStreetMap basemap.
 - Imports geotagged photos, including iPhone HEIC files, extracts GPS EXIF data in the browser, and adds checkpoint pins.
 - Shows the OS grid reference for any point clicked on a route, with an option to add that point as a manual checkpoint.
-- Builds a route schedule with automatic Start and End checkpoints, route-ordered photo/manual checkpoints, via points grouped into the next checkpoint, configurable miles/km display, target speed, checkpoint stop duration, and arrival/finish estimates.
+- Builds a route schedule with automatic Start and End checkpoints, route-ordered photo/manual checkpoints, via points grouped with the next stop as separate editable rows, configurable miles/km display, target speed, checkpoint stop duration, and arrival/finish estimates.
 - Restores imported GPX routes and checkpoint metadata after reload using browser local storage.
 - Shows standard six-figure OS grid references, for example `TQ 302 078`.
 - Exports ordered checkpoints as CSV or GeoJSON.
