@@ -1,0 +1,266 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f7f4;
+  --panel: #ffffff;
+  --ink: #1c2621;
+  --muted: #65736c;
+  --border: #d7dfd9;
+  --accent: #256f57;
+  --accent-strong: #17513f;
+  --warning: #8a4b00;
+  --route: #d7432f;
+  --checkpoint: #1f6fb2;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--ink);
+  cursor: pointer;
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  min-height: 100%;
+}
+
+.map-region {
+  min-height: 100vh;
+  position: relative;
+}
+
+.map {
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.tool-panel {
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 28px rgba(28, 38, 33, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 18px;
+  z-index: 500;
+}
+
+.panel-header {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.panel-header p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.panel-section {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+
+.drop-zone {
+  align-items: center;
+  background: #f8faf8;
+  border: 1px dashed #9fafaa;
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  min-height: 72px;
+  padding: 12px;
+  text-align: center;
+}
+
+.drop-zone.drag-over {
+  background: #edf6f1;
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.drop-zone input {
+  display: none;
+}
+
+.item-list,
+.warning-list {
+  display: grid;
+  gap: 8px;
+}
+
+.empty-state {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.list-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.item-main {
+  align-items: start;
+  display: grid;
+  gap: 2px;
+}
+
+.item-title {
+  font-size: 14px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.item-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.item-actions,
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-actions button,
+.button-row button {
+  flex: 1 1 auto;
+}
+
+.icon-button {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 38px;
+  font-size: 20px;
+  justify-content: center;
+  padding: 0;
+  width: 38px;
+}
+
+.route-swatch {
+  background: var(--route);
+  border-radius: 999px;
+  display: inline-block;
+  height: 10px;
+  margin-right: 6px;
+  width: 10px;
+}
+
+.checkpoint-icon {
+  background: var(--checkpoint);
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  height: 18px;
+  width: 18px;
+}
+
+.warning-item {
+  background: #fff7ea;
+  border: 1px solid #f0d6aa;
+  border-radius: 8px;
+  color: var(--warning);
+  font-size: 13px;
+  padding: 10px;
+}
+
+.popup {
+  display: grid;
+  gap: 4px;
+  min-width: 180px;
+}
+
+.popup strong {
+  overflow-wrap: anywhere;
+}
+
+.popup img {
+  border-radius: 6px;
+  max-height: 120px;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(55vh, 1fr) auto;
+  }
+
+  .map-region,
+  .map {
+    min-height: 55vh;
+  }
+
+  .tool-panel {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -8px 28px rgba(28, 38, 33, 0.08);
+    max-height: none;
+  }
+}

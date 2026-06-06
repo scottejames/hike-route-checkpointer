@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hike Route Checkpointer</title>
+    <link rel="stylesheet" href="vendor/leaflet.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="map-region" aria-label="Map">
+        <div id="map" class="map"></div>
+      </section>
+
+      <aside class="tool-panel" aria-label="Route and checkpoint tools">
+        <header class="panel-header">
+          <div>
+            <h1>Hike Route Checkpointer</h1>
+            <p>Import GPX routes and geotagged checkpoint photos.</p>
+          </div>
+          <button id="fit-all" class="icon-button" type="button" title="Fit all map data" aria-label="Fit all map data">⌖</button>
+        </header>
+
+        <section class="panel-section">
+          <h2>GPX routes</h2>
+          <label class="drop-zone" id="gpx-drop">
+            <span>Drop GPX files or browse</span>
+            <input id="gpx-input" type="file" accept=".gpx,application/gpx+xml,text/xml" multiple>
+          </label>
+          <div id="route-list" class="item-list empty-state">No routes imported.</div>
+        </section>
+
+        <section class="panel-section">
+          <h2>Checkpoint photos</h2>
+          <label class="drop-zone" id="photo-drop">
+            <span>Drop photos or browse</span>
+            <input id="photo-input" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" multiple>
+          </label>
+          <div id="checkpoint-list" class="item-list empty-state">No checkpoints imported.</div>
+        </section>
+
+        <section class="panel-section actions-section">
+          <h2>Export</h2>
+          <div class="button-row">
+            <button id="export-csv" type="button" disabled>Download CSV</button>
+            <button id="export-geojson" type="button" disabled>Download GeoJSON</button>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <h2>Import warnings</h2>
+          <div id="warning-list" class="warning-list empty-state">No warnings.</div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="vendor/leaflet.js"></script>
+    <script src="vendor/togeojson.umd.js"></script>
+    <script src="vendor/exifr.full.umd.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
