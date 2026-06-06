@@ -7,6 +7,7 @@
   <body>
     <script>
       const key = "hike-route-checkpointer.routes.v1";
+      const checkpointKey = "hike-route-checkpointer.checkpoints.v1";
       try {
         const saved = JSON.parse(localStorage.getItem(key) || "null");
         if (saved?.routes?.some((route) => route.id === "test-sussex-route")) {
@@ -15,6 +16,7 @@
       } catch {
         localStorage.removeItem(key);
       }
+      localStorage.removeItem(checkpointKey);
       location.replace("/?persistenceClear=1");
     </script>
   </body>
