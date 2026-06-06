@@ -13,10 +13,15 @@ function getDateTaken(metadata) {
 }
 
 function createThumbnailUrl(file) {
-  if (!file.type.startsWith("image/") || isHeicFile(file)) {
+  if (!file.type.startsWith("image/")) {
     return "";
   }
-  return URL.createObjectURL(file);
+
+  try {
+    return URL.createObjectURL(file);
+  } catch {
+    return "";
+  }
 }
 
 async function readExifMetadata(file) {

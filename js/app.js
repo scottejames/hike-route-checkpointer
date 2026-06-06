@@ -3,6 +3,7 @@ import { extractCheckpoint, revokeCheckpointThumbnail } from "./photos.js";
 import { downloadCheckpointCsv, downloadCheckpointGeojson } from "./export.js";
 
 const sussexCenter = [50.92, -0.32];
+const routeStorageKey = "hike-route-checkpointer.routes.v1";
 const state = {
   routes: [],
   checkpoints: [],
@@ -58,6 +59,68 @@ function addWarning(message) {
   renderWarnings();
 }
 
+function getRouteBounds(geojson) {
+  const bounds = L.geoJSON(geojson).getBounds();
+  return bounds.isValid() ? bounds : null;
+}
+
+function serializeRoutes() {
+  return {
+    version: 1,
+    routes: state.routes.map((route) => ({
+      id: route.id,
+      filename: route.filename,
+      displayName: route.displayName,
+      geojson: route.geojson,
+      visible: route.visible
+    }))
+  };
+}
+
+function saveRoutesToBrowser() {
+  try {
+    localStorage.setItem(routeStorageKey, JSON.stringify(serializeRoutes()));
+  } catch (error) {
+    addWarning(`Routes could not be saved in this browser: ${error.message || "storage is full or unavailable."}`);
+  }
+}
+
+function loadRoutesFromBrowser() {
+  let saved;
+  try {
+    saved = JSON.parse(localStorage.getItem(routeStorageKey) || "null");
+  } catch {
+    addWarning("Saved routes could not be read and were ignored.");
+    return;
+  }
+
+  if (!saved || saved.version !== 1 || !Array.isArray(saved.routes)) {
+    return;
+  }
+
+  for (const savedRoute of saved.routes) {
+    const bounds = getRouteBounds(savedRoute.geojson);
+    if (!bounds) {
+      addWarning(`${savedRoute.filename || "Saved route"} could not be restored.`);
+      continue;
+    }
+
+    const route = {
+      id: savedRoute.id || crypto.randomUUID(),
+      filename: savedRoute.filename || "Saved route",
+      displayName: savedRoute.displayName || savedRoute.filename || "Saved route",
+      geojson: savedRoute.geojson,
+      visible: savedRoute.visible !== false,
+      bounds
+    };
+    state.routes.push(route);
+    addRouteLayer(route);
+    if (!route.visible) {
+      state.routeLayers.get(route.id)?.remove();
+    }
+  }
+}
+
 function routeStyle() {
   return {
     color: "#d7432f",
@@ -85,7 +148,9 @@ function addRouteLayer(route) {
 }
 
 function addCheckpointMarker(checkpoint) {
-  const popupImage = checkpoint.thumbnailUrl ? `<img alt="" src="${checkpoint.thumbnailUrl}">` : "";
+  const popupImage = checkpoint.thumbnailUrl
+    ? `<img alt="" src="${escapeHtml(checkpoint.thumbnailUrl)}" onerror="this.hidden=true">`
+    : "";
   const marker = L.marker([checkpoint.latitude, checkpoint.longitude], { icon: checkpointIcon })
     .bindPopup(`
       <div class="popup">
@@ -195,6 +260,7 @@ async function handleGpxFiles(files) {
     }
   }
   renderRoutes();
+  saveRoutesToBrowser();
   fitAll();
 }
 
@@ -266,6 +332,7 @@ elements.routeList.addEventListener("click", (event) => {
       layer.remove();
     }
     renderRoutes();
+    saveRoutesToBrowser();
   }
 
   if (button.dataset.action === "zoom-route") {
@@ -277,6 +344,7 @@ elements.routeList.addEventListener("click", (event) => {
     state.routeLayers.delete(route.id);
     state.routes = state.routes.filter((candidate) => candidate.id !== route.id);
     renderRoutes();
+    saveRoutesToBrowser();
   }
 });
 
@@ -316,6 +384,28 @@ installFileInput(elements.photoInput, handlePhotoFiles);
 installDropZone(elements.gpxDrop, handleGpxFiles);
 installDropZone(elements.photoDrop, handlePhotoFiles);
 
+loadRoutesFromBrowser();
 renderRoutes();
 renderCheckpoints();
 renderWarnings();
+fitAll();
+
+if (new URLSearchParams(location.search).has("testHooks")) {
+  window.__hrcTest = {
+    routeCount: () => state.routes.length,
+    routeNames: () => state.routes.map((route) => route.displayName),
+    importGpxText: async (text, filename = "test-route.gpx") => {
+      await handleGpxFiles([new File([text], filename, { type: "application/gpx+xml" })]);
+    },
+    clearSavedRoutes: () => {
+      localStorage.removeItem(routeStorageKey);
+      for (const layer of state.routeLayers.values()) {
+        layer.remove();
+      }
+      state.routes = [];
+      state.routeLayers.clear();
+      renderRoutes();
+      fitAll();
+    }
+  };
+}

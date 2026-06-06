@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Route Persistence Check</title>
+  </head>
+  <body>
+    <script>
+      localStorage.setItem("hike-route-checkpointer.routes.v1", JSON.stringify({
+        version: 1,
+        routes: [
+          {
+            id: "test-sussex-route",
+            filename: "sample-route.gpx",
+            displayName: "Sussex Sample Route",
+            visible: true,
+            geojson: {
+              type: "FeatureCollection",
+              features: [
+                {
+                  type: "Feature",
+                  properties: {
+                    name: "Sussex Sample Route"
+                  },
+                  geometry: {
+                    type: "LineString",
+                    coordinates: [
+                      [-0.0088, 50.8738, 37],
+                      [-0.0347, 50.8892, 80],
+                      [-0.0530, 50.9060, 129],
+                      [-0.0834, 50.9225, 160]
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }));
+      location.replace("/?persistenceCheck=1");
+    </script>
+  </body>
+</html>
