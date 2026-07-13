@@ -1,0 +1,12 @@
+node_modules
+dist
+.npm
+*.local
+
+# Amplify
+.amplify
+amplify_outputs.json
+amplify/.config/local-*
+
+# Editor/OS
+.DS_Store

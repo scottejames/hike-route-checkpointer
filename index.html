@@ -1,102 +1,13 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#256f57" />
     <title>Hike Route Checkpointer</title>
-    <link rel="stylesheet" href="vendor/leaflet.css">
-    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <main class="app-shell">
-      <section class="map-region" aria-label="Map">
-        <div id="map" class="map"></div>
-      </section>
-
-      <aside class="tool-panel" aria-label="Route and checkpoint tools">
-        <header class="panel-header">
-          <div>
-            <h1>Hike Route Checkpointer</h1>
-            <p>Import GPX routes and geotagged checkpoint photos.</p>
-          </div>
-          <button id="fit-all" class="icon-button" type="button" title="Fit all map data" aria-label="Fit all map data">⌖</button>
-        </header>
-
-        <div class="config-bar" aria-label="Map settings">
-          <fieldset class="unit-toggle">
-            <legend>Distance units</legend>
-            <label>
-              <input type="radio" name="distance-unit" value="miles">
-              <span>Miles</span>
-            </label>
-            <label>
-              <input type="radio" name="distance-unit" value="km">
-              <span>Km</span>
-            </label>
-          </fieldset>
-          <span id="speed-summary" class="speed-summary"></span>
-          <button id="settings-open" class="icon-button" type="button" title="Settings" aria-label="Settings">⚙</button>
-        </div>
-
-        <section class="panel-section">
-          <h2>GPX routes</h2>
-          <label class="drop-zone" id="gpx-drop">
-            <span>Drop GPX files or browse</span>
-            <input id="gpx-input" type="file" accept=".gpx,application/gpx+xml,text/xml" multiple>
-          </label>
-          <div id="route-list" class="item-list empty-state">No routes imported.</div>
-        </section>
-
-        <section class="panel-section">
-          <h2>Checkpoints</h2>
-          <label class="drop-zone" id="photo-drop">
-            <span>Drop checkpoint photos or browse</span>
-            <input id="photo-input" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" multiple>
-          </label>
-          <div id="checkpoint-list" class="item-list empty-state">No checkpoints added.</div>
-        </section>
-
-        <section class="panel-section actions-section">
-          <h2>Export</h2>
-          <div class="button-row">
-            <button id="export-csv" type="button" disabled>Download CSV</button>
-            <button id="export-geojson" type="button" disabled>Download GeoJSON</button>
-          </div>
-        </section>
-
-        <section class="panel-section">
-          <h2>Import warnings</h2>
-          <div id="warning-list" class="warning-list empty-state">No warnings.</div>
-        </section>
-      </aside>
-    </main>
-
-    <dialog id="settings-dialog" class="settings-dialog">
-      <form id="settings-form" class="settings-form" method="dialog">
-        <header class="dialog-header">
-          <h2>Settings</h2>
-          <button id="settings-close" class="icon-button" type="button" aria-label="Close settings">×</button>
-        </header>
-        <label class="field-group" for="target-speed">
-          <span>Target speed</span>
-          <span id="speed-unit-label" class="field-hint">mph</span>
-        </label>
-        <input id="target-speed" class="speed-input" type="number" min="0.1" max="20" step="0.1" inputmode="decimal">
-        <label class="field-group" for="checkpoint-stop">
-          <span>Checkpoint stop</span>
-          <span class="field-hint">minutes</span>
-        </label>
-        <input id="checkpoint-stop" class="speed-input" type="number" min="0" max="240" step="1" inputmode="numeric">
-        <div class="dialog-actions">
-          <button id="settings-cancel" type="button">Cancel</button>
-          <button type="submit">Save</button>
-        </div>
-      </form>
-    </dialog>
-
-    <script src="vendor/leaflet.js"></script>
-    <script src="vendor/togeojson.umd.js"></script>
-    <script src="vendor/exifr.full.umd.js"></script>
-    <script type="module" src="js/app.js?v=20260606-via-points"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
